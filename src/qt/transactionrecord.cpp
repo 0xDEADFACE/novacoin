@@ -25,8 +25,8 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
 {
     QList<TransactionRecord> parts;
     int64 nTime = wtx.GetTxTime();
-    int64 nCredit = wtx.GetCredit(false,true);
-    int64 nDebit = wtx.GetDebit();
+    int64 nCredit = wtx.GetCredit(true);
+    int64 nDebit = wtx.GetDebit(MINE_ALL);
     int64 nNet = nCredit - nDebit;
     uint256 hash = wtx.GetHash(), hashPrev = 0;
     std::map<std::string, std::string> mapValue = wtx.mapValue;
@@ -205,8 +205,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     // For generated transactions, determine maturity
     if(type == TransactionRecord::Generated)
     {
-        int64 nCredit = wtx.GetCredit(false,true);
-        if (nCredit == 0)
+        if (wtx.GetBlocksToMaturity() > 0)
         {
             status.maturity = TransactionStatus::Immature;
 

@@ -25,7 +25,10 @@ enum isminetype
     MINE_NO = 0,
     MINE_WATCH_ONLY = 1,
     MINE_SPENDABLE = 2,
+    MINE_ALL = MINE_WATCH_ONLY | MINE_SPENDABLE
 };
+
+typedef uint8_t isminefilter;
 
 /** Signature hash types/flags */
 enum
@@ -623,7 +626,7 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<std::v
 int ScriptSigArgsExpected(txnouttype t, const std::vector<std::vector<unsigned char> >& vSolutions);
 bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType);
 isminetype IsMine(const CKeyStore& keystore, const CScript& scriptPubKey);
-isminetype IsMine(const CKeyStore& keystore, const CTxDestination &dest);
+isminetype IsMine(const CKeyStore& keystore, const CTxDestination& dest);
 void ExtractAffectedKeys(const CKeyStore &keystore, const CScript& scriptPubKey, std::vector<CKeyID> &vKeys);
 bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet);
 bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<CTxDestination>& addressRet, int& nRequiredRet);
